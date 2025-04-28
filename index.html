@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kata kata untuk milkyway</title>
+  <title>Kata Kata Untuk Milkyway</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
     h1 {
       text-align: center;
     }
-    textarea, button {
+    input, textarea, button {
       width: 100%;
       margin-top: 10px;
       font-size: 1rem;
@@ -35,20 +35,24 @@
 </head>
 <body>
 
-  <h1>KATA KATA</h1>
+  <h1>Kata-Kata untuk Milkyway</h1>
 
+  <input type="text" id="nama" placeholder="Nama Discord Mu">
   <textarea id="pesan" rows="5" placeholder="Tulis pesanmu di sini..."></textarea>
-  <button onclick="kirimPesan()">Kirim ke Discord</button>
+  <button onclick="kirimPesan()">Kirim</button>
 
   <script>
     function kirimPesan() {
       const webhookURL = 'https://discord.com/api/webhooks/1366408951658315776/ciyl_PfzQMz0M4-l9LMBQXXHlPyC8kFVponebpdh-EItpRu4tuTub1MjTaxocFUX-mOx'; // Ganti ini!
-      const pesan = document.getElementById('pesan').value;
+      const nama = document.getElementById('nama').value.trim();
+      const pesan = document.getElementById('pesan').value.trim();
 
-      if (!pesan.trim()) {
-        alert("Pesan tidak boleh kosong!");
+      if (!nama || !pesan) {
+        alert("Nama dan Pesan tidak boleh kosong!");
         return;
       }
+
+      const kontenPesan = `Nama Discord: ${nama}\nPesan: ${pesan}`;
 
       fetch(webhookURL, {
         method: 'POST',
@@ -56,13 +60,14 @@
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          content: pesan
+          content: kontenPesan
         })
       })
       .then(response => {
         if (response.ok) {
           alert('Pesan berhasil dikirim!');
-          document.getElementById('pesan').value = ''; // Kosongkan input
+          document.getElementById('nama').value = '';
+          document.getElementById('pesan').value = '';
         } else {
           alert('Gagal mengirim pesan.');
         }
